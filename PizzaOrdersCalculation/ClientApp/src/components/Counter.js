@@ -1,31 +1,24 @@
-import React, { Component } from 'react';
+import React, { useEffect } from "react";
+import PizzaService from "D:\Projects\PizzaOrdersCalculation\PizzaOrdersCalculation/Services/PizzaService";
 
-export class Counter extends Component {
-  static displayName = Counter.name;
+const Counter = () => {
+  const [date, setDate] = useState("");
 
-  constructor(props) {
-    super(props);
-    this.state = { currentCount: 0 };
-    this.incrementCounter = this.incrementCounter.bind(this);
-  }
+  useEffect(() => {
+    const fetchDate = async () => {
+      const date = await PizzaService.GetAllOrders();
+      setDate(date);
+    };
 
-  incrementCounter() {
-    this.setState({
-      currentCount: this.state.currentCount + 1
-    });
-  }
+    fetchDate();
+  }, []);
 
-  render() {
-    return (
-      <div>
-        <h1>Counter</h1>
+  return (
+    <div>
+      <h1>Date from .NET in-memory database</h1>
+      <p>{date}</p>
+    </div>
+  );
+};
 
-        <p>This is a simple example of a React component.</p>
-
-        <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
-
-        <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button>
-      </div>
-    );
-  }
-}
+export default Counter;

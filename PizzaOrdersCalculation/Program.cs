@@ -1,12 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using PizzaOrdersCalculation.Model;
+using PizzaOrdersCalculation.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<PizzaDbContext>();
+builder.Services.AddDbContext<PizzaDbContext>( options => options.UseInMemoryDatabase("PizzaDB"));
 
 var app = builder.Build();
 
