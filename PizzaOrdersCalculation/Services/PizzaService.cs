@@ -25,12 +25,12 @@ namespace PizzaOrdersCalculation.Services
             return
                 (from a in _context.OrderDetail
                  join b in _context.Orders on a.OrderId equals b.Id
-                 join c in _context.Pizzas on a.PizzaId equals c.Id
+                 join c in _context.Pizzas on b.PizzaId equals c.Id
                  select new OrderDetailDto
                  {
                      OrderPizzaName = c.Name,
                      OrderSize = c.Size,
-                     OrderItemPrice = a.PizzaPrice,
+                     OrderItemPrice = b.PizzaPrice,
 
                  }).AsQueryable();
         }

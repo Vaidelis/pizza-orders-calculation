@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using PizzaOrdersCalculation.Model;
 
 namespace PizzaOrdersCalculation.Models
 {
@@ -8,6 +9,11 @@ namespace PizzaOrdersCalculation.Models
         [Key]
         public int Id { get; set; }
         public DateTimeOffset OrderDate { get; set; }
+        public decimal PizzaPrice { get; set; }
+        public int PizzaId { get; set; }
+
+        [ForeignKey("PizzaId")]
+        public virtual Pizza Pizza { get; set; }
 
     }
 }

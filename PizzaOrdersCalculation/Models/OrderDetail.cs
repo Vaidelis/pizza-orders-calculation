@@ -8,16 +8,16 @@ namespace PizzaOrdersCalculation.Models
     {
         [Key]
         public int Id { get; set; }
-        public decimal PizzaPrice { get; set; }
 
         public int OrderId { get; set; }
 
         [ForeignKey("OrderId")]
         public virtual Orders Order { get; set; }
 
-        public int PizzaId { get; set; }
+        public int ToppingsId { get; set; }
 
-        [ForeignKey("PizzaId")]
-        public virtual Pizza Pizza { get; set; }
+        [ForeignKey("ToppingsId")]
+        public virtual Toppings Topping { get; set; }
+
     }
 }

@@ -11,10 +11,5 @@ namespace PizzaOrdersCalculation.Model
         public string Size { get; set; }
         public string Name { get; set; }
         public int Price { get; set; }
-
-        public int OrderId { get; set; }
-
-        [ForeignKey("OrderId")]
-        public virtual Orders Order { get; set; }
     }
 }

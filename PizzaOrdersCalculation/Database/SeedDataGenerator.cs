@@ -21,10 +21,12 @@ namespace PizzaOrdersCalculation.Database
                         var pizzas = GenerateCustomers();
                         var orders = GenerateOrders();
                         var orderDetails = GenerateOrderDetails();
+                        var toppings = GenerateToppings();
 
                         context.Pizzas.AddRange(pizzas);
                         context.Orders.AddRange(orders);
                         context.OrderDetail.AddRange(orderDetails);
+                        context.Toppings.AddRange(toppings);
 
                         context.SaveChanges();
                         seeded = true;
@@ -39,22 +41,22 @@ namespace PizzaOrdersCalculation.Database
             return new Pizza[] {
                   new Pizza
                     {
-                        Name = "Md. Mahedee Hasan",
-                        Size = "Head of Software Development",
+                        Name = "Italian pizza",
+                        Size = "Large",
                         Price = 12,
                     },
 
                     new Pizza
                     {
-                        Name = "Khaleda Islam",
-                        Size = "Software Engineer",
+                        Name = "Italian pizza",
+                        Size = "Medium",
                         Price = 10,
                     },
 
                     new Pizza
                     {
-                        Name = "Tahiya Hasan Arisha",
-                        Size = "Jr. Software Engineer",
+                        Name = "Italian pizza",
+                        Size = "Small",
                         Price = 8,
                     }
               };
@@ -66,18 +68,20 @@ namespace PizzaOrdersCalculation.Database
                   new Orders
                   {
                       OrderDate = DateTimeOffset.UtcNow,
+                      PizzaId = 1,
+                      PizzaPrice = 12,
                   },
                   new Orders
                   {
                       OrderDate = DateTimeOffset.UtcNow,
+                      PizzaId = 2,
+                      PizzaPrice = 10,
                   },
                   new Orders
                   {
                       OrderDate = DateTimeOffset.UtcNow,
-                  },
-                  new Orders
-                  {
-                      OrderDate = DateTimeOffset.UtcNow,
+                      PizzaId = 3,
+                      PizzaPrice = 8,
                   },
             };
         }
@@ -88,44 +92,35 @@ namespace PizzaOrdersCalculation.Database
                   new OrderDetail
                   {
                       OrderId = 1,
-                      PizzaId = 1,
-                      PizzaPrice = 12,
-                  },
-                  new OrderDetail
-                  {
-                      OrderId = 4,
-                      PizzaId = 1,
-                      PizzaPrice = 12,
-                  },
-                  new OrderDetail
-                  {
-                      OrderId = 5,
-                      PizzaId = 1,
-                      PizzaPrice = 12,
-                  },
-                  new OrderDetail
-                  {
-                      OrderId = 6,
-                      PizzaId = 1,
-                      PizzaPrice = 12,
-                  },
-                  new OrderDetail
-                  {
-                       OrderId = 1,
-                      PizzaId = 1,
-                      PizzaPrice = 12,
-                  },
-                  new OrderDetail
-                  {
-                       OrderId = 1,
-                      PizzaId = 1,
-                      PizzaPrice = 12,
+                      ToppingsId = 1,
                   },
                   new OrderDetail
                   {
                       OrderId = 1,
-                      PizzaId = 1,
-                      PizzaPrice = 12,
+                      ToppingsId = 2,
+                  },
+                  new OrderDetail
+                  {
+                      OrderId = 1,
+                      ToppingsId = 3,
+                  },
+              };
+        }
+
+        public static Toppings[] GenerateToppings()
+        {
+            return new Toppings[] {
+                  new Toppings
+                  {
+                      Name = "Cheese",
+                  },
+                  new Toppings
+                  {
+                      Name = "Ham",
+                  },
+                  new Toppings
+                  {
+                      Name = "Onion",
                   },
               };
         }
