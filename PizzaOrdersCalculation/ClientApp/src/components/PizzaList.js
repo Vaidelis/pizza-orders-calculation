@@ -5,14 +5,14 @@ export class PizzaList extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+    this.state = { pizza: [], loading: true };
   }
 
   componentDidMount() {
     this.populatePizzaData();
   }
 
-  static renderForecastsTable(forecasts) {
+  static renderPizzaTable(pizza) {
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
@@ -23,11 +23,11 @@ export class PizzaList extends Component {
           </tr>
         </thead>
         <tbody>
-          {forecasts.map(forecast =>
-            <tr key={forecast.id}>
-              <td>{forecast.name}</td>
-              <td>{forecast.size}</td>
-              <td>{forecast.price}</td>
+          {pizza.map(pizza =>
+            <tr key={pizza.id}>
+              <td>{pizza.name}</td>
+              <td>{pizza.size}</td>
+              <td>{pizza.price}</td>
             </tr>
           )}
         </tbody>
@@ -38,7 +38,7 @@ export class PizzaList extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : PizzaList.renderForecastsTable(this.state.forecasts);
+      : PizzaList.renderPizzaTable(this.state.pizza);
 
     return (
       <div>
@@ -52,6 +52,6 @@ export class PizzaList extends Component {
   async populatePizzaData() {
     const response = await fetch('pizza');
     const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
+    this.setState({ pizza: data, loading: false });
   }
 }
