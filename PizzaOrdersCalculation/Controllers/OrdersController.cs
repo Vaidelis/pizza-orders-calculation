@@ -13,6 +13,11 @@ namespace PizzaOrdersCalculation.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        public List<Orders> GetOrders()
+        {
+            return _context.Orders.ToList();
+        }
         [HttpPost]
         public async Task<IActionResult> CreateOrderl([FromBody] Orders order)
         {

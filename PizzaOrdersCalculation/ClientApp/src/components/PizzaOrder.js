@@ -146,7 +146,7 @@ export class PizzaOrder extends Component {
   }
 
   async submitOrder() {
-    console.log(this.state.selectedId);
+    console.log(this.state.selectedToppings);
     const order = {
       pizzaName: this.state.selectedName,
       PizzaId: this.state.selectedId,
