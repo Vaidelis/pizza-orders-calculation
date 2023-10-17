@@ -4,7 +4,7 @@ using PizzaOrdersCalculation.Model;
 
 namespace PizzaOrdersCalculation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class PizzaController : ControllerBase
     {
@@ -14,7 +14,7 @@ namespace PizzaOrdersCalculation.Controllers
         {
             _context = context;
         }
-
+        [HttpGet]
         public List<Pizza> GetPizzas()
         {
             return _context.Pizzas.ToList();

@@ -1,24 +1,54 @@
-import React, { useEffect } from "react";
-import PizzaService from "D:\Projects\PizzaOrdersCalculation\PizzaOrdersCalculation/Services/PizzaService";
+import React, { Component } from 'react';
 
-const Counter = () => {
-  const [date, setDate] = useState("");
+export class Counter extends Component {
+  static displayName = Counter.name;
 
-  useEffect(() => {
-    const fetchDate = async () => {
-      const date = await PizzaService.GetAllOrders();
-      setDate(date);
-    };
+  constructor(props) {
+    super(props);
+    this.state = { forecasts: [], loading: true };
+  }
 
-    fetchDate();
-  }, []);
+  componentDidMount() {
+    this.populatePizzaData();
+  }
 
-  return (
-    <div>
-      <h1>Date from .NET in-memory database</h1>
-      <p>{date}</p>
-    </div>
-  );
-};
+  static renderForecastsTable(forecasts) {
+    return (
+      <table className='table table-striped' aria-labelledby="tabelLabel">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Temp. (C)</th>
+            <th>Temp. (F)</th>
+            <th>Summary</th>
+          </tr>
+        </thead>
+        <tbody>
+         
+        </tbody>
+      </table>
+    );
+  }
 
-export default Counter;
+  render() {
+    let contents = this.state.loading
+      ? <p><em>Loading...</em></p>
+      : Counter.renderForecastsTable(this.state.forecasts);
+
+    return (
+      <div>
+        <h1 id="tabelLabel" >Weather forecast</h1>
+        <p>This component demonstrates fetching data from the server.</p>
+        {contents}
+      </div>
+    );
+  }
+
+  async populatePizzaData() {
+    const response = await fetch('pizza');
+
+    const data = await response.json();
+    console.log(data);
+    this.setState({ forecasts: data, loading: false });
+  }
+}
