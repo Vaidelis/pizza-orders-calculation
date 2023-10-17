@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 export class PizzaOrder extends Component {
   static displayName = PizzaOrder.name;
@@ -8,9 +8,9 @@ export class PizzaOrder extends Component {
     this.state = {
       pizza: [],
       loading: true,
-      selectedName: '',
-      selectedPrice: '',
-      selectedSize: '',
+      selectedName: "",
+      selectedPrice: "",
+      selectedSize: "",
     };
   }
 
@@ -19,7 +19,7 @@ export class PizzaOrder extends Component {
   }
 
   async populatePizzaData() {
-    const response = await fetch('pizza');
+    const response = await fetch("pizza");
     const data = await response.json();
     this.setState({ pizza: data, loading: false });
   }
@@ -36,39 +36,46 @@ export class PizzaOrder extends Component {
     this.setState({ selectedSize: event.target.value });
   };
 
+  renderMergedSelect = () => {
+    const mergedPizza = this.state.pizza.map((pizza) => ({
+      id: pizza.id,
+      name: `${pizza.name} - ${pizza.size}`,
+    }));
+
+    return (
+      <select
+        value={this.state.selectedName}
+        onChange={this.handleSelectNameChange}
+      >
+        {mergedPizza.map((pizza) => (
+          <option key={pizza.id}>{pizza.name}</option>
+        ))}
+      </select>
+    );
+  };
+
   render() {
     return (
       <div>
         <h1>Pizza Order</h1>
         <p>Select pizza</p>
-        <select
-          value={this.state.selectedName}
-          onChange={this.handleSelectNameChange}
-        >
-          <option value="">All names</option>
-          {this.state.pizza.map((pizza) => (
-            <option key={pizza.id}>{pizza.name}</option>
-          ))},
-        </select>
-        <select
-          value={this.state.selectedPrice}
-          onChange={this.handleSelectPriceChange}
-        >
-          <option value="">All prices</option>
-          {this.state.pizza.map((pizza) => (
-            <option key={pizza.id}>{pizza.price}</option>
-          ))},
-        </select>
-        <select
-          value={this.state.selectedSize}
-          onChange={this.handleSelectSizeChange}
-        >
-          <option value="">All sizes</option>
-          {this.state.pizza.map((pizza) => (
-            <option key={pizza.id}>{pizza.size}</option>
-          ))},
-        </select>
-       
+        <div className="select-container">
+          <span className="select-label">Pizza</span>
+          {this.renderMergedSelect()}
+        </div>
+        <div className="select-container">
+          <span className="select-label">Pizza Price</span>
+          <select
+            id="pizza-price-select"
+            value={this.state.selectedPrice}
+            onChange={this.handleSelectPriceChange}
+          >
+            <option value="">All prices</option>
+            {this.state.pizza.map((pizza) => (
+              <option key={pizza.id}>{pizza.price}</option>
+            ))}
+          </select>
+        </div>
       </div>
     );
   }
