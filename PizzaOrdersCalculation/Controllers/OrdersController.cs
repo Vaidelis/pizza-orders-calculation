@@ -26,7 +26,9 @@ namespace PizzaOrdersCalculation.Controllers
                  _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
 
-                return Ok("Order detail created successfully");
+                int orderId = order.Id;
+
+                return Ok(new { orderId });
             }
             catch (Exception ex)
             {

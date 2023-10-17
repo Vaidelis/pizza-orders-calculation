@@ -147,7 +147,7 @@ export class PizzaOrder extends Component {
   }
 
   async submitOrder() {
-    //console.log(this.state.selectedToppings);
+    let orderId;
   
     // Prepare the order object
     const order = {
@@ -163,14 +163,18 @@ export class PizzaOrder extends Component {
       },
       body: JSON.stringify(order),
     });
+
     if (orderResponse.status === 200) {
-       // Now, create OrderDetail records for each selected topping
+        const responseData = await orderResponse.json();
+        orderId = responseData.orderId;
+        console.log(this.state.selectedToppings);
+
       for (const selectedTopping of this.state.selectedToppings) {
+        console.log(orderId);
         const orderDetail = {
-          orderId: this.state.selectedId, // Use the ID returned by the server when you created the order
+          orderId: orderId,
           toppingsId: selectedTopping.id,
         };
-        console.log(selectedTopping.id);
   
         // Send the order detail data to the server
         const orderDetailResponse = await fetch("orderDetail", {
@@ -182,8 +186,7 @@ export class PizzaOrder extends Component {
         });
   
         if (orderDetailResponse.status === 200) {
-          const orderDetailData = await orderDetailResponse.json();
-          console.log(orderDetailData.message);
+          
         } else {
           // Handle the error when creating an OrderDetail record
         }

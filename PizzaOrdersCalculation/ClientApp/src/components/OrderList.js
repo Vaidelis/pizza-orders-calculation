@@ -5,14 +5,16 @@ export class OrderList extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { pizza: [], loading: true };
+    this.state = { order: [], orderDetail: [], loading: true };
   }
 
   componentDidMount() {
     this.populateOrderData();
+    this.populateOrderDetailData();
   }
 
-  static renderOrderTable(pizza) {
+  static renderOrderTable(order, orderDetail) {
+    console.log(orderDetail);
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
@@ -20,16 +22,39 @@ export class OrderList extends Component {
             <th>Order id</th>
             <th>Price</th>
             <th>Pizza id</th>
+            <th>Pizza toppings</th>
           </tr>
         </thead>
         <tbody>
-          {pizza.map(pizza =>
-            <tr key={pizza.id}>
-              <td>{pizza.id}</td>
-              <td>{pizza.pizzaPrice}</td>
-              <td>{pizza.pizzaId}</td>
-            </tr>
-          )}
+          {order.map(order => {
+            // Initialize toppings as an empty string
+            let toppings = "";
+
+            //console.log(order.id);
+  
+            // Find the orderDetail for the current order
+            for (let i = 0; i < orderDetail.length; i++) {
+              if (orderDetail[i] && orderDetail[i].orderId === order.id) {
+                //console.log(orderDetail[i].orderId);
+            
+                // If a matching orderDetail is found, join the toppings
+                if (Array.isArray(orderDetail[i].toppingsId)) {
+                    toppings += orderDetail[i].toppingsId.map(id => id.toString()).join(', ');
+                  } else if (orderDetail[i].toppingsId) {
+                    toppings += orderDetail[i].toppingsId.toString();
+                  }
+              }
+            }
+  
+            return (
+              <tr key={order.id}>
+                <td>{order.id}</td>
+                <td>{order.pizzaPrice}</td>
+                <td>{order.pizzaId}</td>
+                <td>{toppings}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     );
@@ -38,7 +63,7 @@ export class OrderList extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : OrderList.renderOrderTable(this.state.pizza);
+      : OrderList.renderOrderTable(this.state.order, this.state.orderDetail);
 
     return (
       <div>
@@ -52,7 +77,12 @@ export class OrderList extends Component {
   async populateOrderData() {
     const response = await fetch('orders');
     const data = await response.json();
-    console.log(data);
-    this.setState({ pizza: data, loading: false });
+    this.setState({ order: data, loading: false });
+  }
+
+  async populateOrderDetailData() {
+    const response = await fetch('orderDetail');
+    const data = await response.json();
+    this.setState({ orderDetail: data, loading: false });
   }
 }
