@@ -35,14 +35,7 @@ export class OrderList extends Component {
             // Find the orderDetail for the current order
             for (let i = 0; i < orderDetail.length; i++) {
               if (orderDetail[i] && orderDetail[i].orderId === order.id) {
-                //console.log(orderDetail[i].orderId);
-            
-                // If a matching orderDetail is found, join the toppings
-                if (Array.isArray(orderDetail[i].toppingsId)) {
-                    toppings += orderDetail[i].toppingsId.map(id => id.toString()).join(', ');
-                  } else if (orderDetail[i].toppingsId) {
-                    toppings += orderDetail[i].toppingsId.toString();
-                  }
+                toppings += orderDetail[i].toppingName.toString() + ', ';          
               }
             }
   
@@ -82,7 +75,21 @@ export class OrderList extends Component {
 
   async populateOrderDetailData() {
     const response = await fetch('orderDetail');
-    const data = await response.json();
-    this.setState({ orderDetail: data, loading: false });
+    const orderDetailData = await response.json();
+  
+    // Get the topping names from the orderDetailData
+    for (const orderDetail of orderDetailData) {
+      // Fetch the topping name from the server
+      const toppingResponse = await fetch(`toppings/${orderDetail.toppingsId}`);
+      const toppingData = await toppingResponse.json();
+  
+      // Add the topping name to the orderDetailData object
+      orderDetail.toppingName = toppingData.name;
+    }
+  
+    console.log(orderDetailData);
+  
+    // Update the state with the order detail data
+    this.setState({ orderDetail: orderDetailData });
   }
 }

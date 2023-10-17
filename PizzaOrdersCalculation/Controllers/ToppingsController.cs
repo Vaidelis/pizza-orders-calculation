@@ -20,5 +20,10 @@ namespace PizzaOrdersCalculation.Controllers
         {
             return _context.Toppings.ToList();
         }
+        [HttpGet("{id}")]
+        public Toppings GetToppingById(int id)
+        {
+            return _context.Toppings.SingleOrDefault(e => e.Id == id);
+        }
     }
 }
