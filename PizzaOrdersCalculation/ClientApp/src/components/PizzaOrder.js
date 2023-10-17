@@ -11,9 +11,11 @@ export class PizzaOrder extends Component {
       selectedName: "",
       selectedPrice: "",
       selectedSize: "",
+      selectedId: "",
       toppings: [],
       selectedToppings: [],
     };
+    this.submitOrder = this.submitOrder.bind(this);
   }
 
   componentDidMount() {
@@ -36,11 +38,19 @@ export class PizzaOrder extends Component {
   }
 
   handleSelectNameChange = (event) => {
-    this.setState({ selectedName: event.target.value });
-  };
-
-  handleSelectPriceChange = (event) => {
-    this.setState({ selectedPrice: event.target.value });
+    const selectedName = event.target.value;
+  
+    // Find the pizza object that matches the selected name and size
+    const selectedPizza = this.state.pizza.find(pizza => {
+      return `${pizza.name} - ${pizza.size}` === selectedName;
+    });
+  
+    if (selectedPizza) {
+      this.setState({
+        selectedName: selectedName,
+        selectedId: selectedPizza.id,
+      });
+    }
   };
 
   handleSelectSizeChange = (event) => {
@@ -96,19 +106,6 @@ export class PizzaOrder extends Component {
           {this.renderMergedSelect()}
         </div>
         <div className="select-container">
-          <span className="select-label">Pizza Price</span>
-          <select
-            id="pizza-price-select"
-            value={this.state.selectedPrice}
-            onChange={this.handleSelectPriceChange}
-          >
-            <option value="">All prices</option>
-            {this.state.pizza.map((pizza) => (
-              <option key={pizza.id}>{pizza.price}</option>
-            ))}
-          </select>
-        </div>
-        <div className="select-container">
   <span className="select-label">Toppings</span>
   <select
     id="toppings-select"
@@ -141,19 +138,23 @@ export class PizzaOrder extends Component {
         {this.state.isLoading && (
           <div>Loading toppings...</div>
         )}
+
+<button onClick={this.submitOrder}>Submit Order</button>
       </div>
+      
     );
   }
 
   async submitOrder() {
+    console.log(this.state.selectedId);
     const order = {
       pizzaName: this.state.selectedName,
-      pizzaPrice: this.state.selectedPrice,
-      pizzaSize: this.state.selectedSize,
-      toppings: this.state.selectedToppings.map((topping) => topping.value),
+      PizzaId: this.state.selectedId,
+      pizzaPrice: 10,
+      //toppings: this.state.selectedToppings.map((topping) => topping.value),
     };
   
-    const response = await fetch("/order", {
+    const response = await fetch("orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -162,9 +163,12 @@ export class PizzaOrder extends Component {
     });
   
     if (response.status === 200) {
-      // Order successfully placed
+      const data = await response.json(); // Parse the JSON response
+      console.log(data.message); // Output the message from the server
+      // Handle the success message here
     } else {
       // Error placing order
+      const errorData = await response.json(); // Parse the JSON error response
     }
   }
 }
