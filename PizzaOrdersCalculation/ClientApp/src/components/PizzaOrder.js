@@ -33,7 +33,6 @@ export class PizzaOrder extends Component {
   async getToppings() {
     const response = await fetch("toppings");
     const data = await response.json();
-    console.log(data);
     this.setState({ toppings: data });
   }
 
@@ -58,8 +57,9 @@ export class PizzaOrder extends Component {
   };
   handleToppingsChange = (event) => {
     const selectedOptions = event.target.selectedOptions;
+    console.log(selectedOptions);
     const selectedToppings = Array.from(selectedOptions).map((option) => ({
-      id: option.value, // You can use an appropriate identifier for each topping
+      id: option.getAttribute("data-id"), // You can use an appropriate identifier for each topping
       name: option.value,
     }));
   
@@ -118,6 +118,7 @@ export class PizzaOrder extends Component {
         <option
           key={topping.id}
           value={topping.name}
+          data-id={topping.id}
           disabled={this.isToppingDisabled(topping.name)}
         >
           {topping.name}
