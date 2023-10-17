@@ -25,7 +25,7 @@ export class OrderList extends Component {
         <tbody>
           {pizza.map(pizza =>
             <tr key={pizza.id}>
-            <td>{pizza.id}</td>
+              <td>{pizza.id}</td>
               <td>{pizza.pizzaPrice}</td>
               <td>{pizza.pizzaId}</td>
             </tr>
@@ -42,8 +42,8 @@ export class OrderList extends Component {
 
     return (
       <div>
-        <h1 id="tabelLabel" >Pizza list</h1>
-        <p>Available pizzas to buy</p>
+        <h1 id="tabelLabel" >Orders list</h1>
+        <p>All created orders</p>
         {contents}
       </div>
     );

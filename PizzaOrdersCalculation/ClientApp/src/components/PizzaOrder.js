@@ -59,7 +59,7 @@ export class PizzaOrder extends Component {
     const selectedOptions = event.target.selectedOptions;
     console.log(selectedOptions);
     const selectedToppings = Array.from(selectedOptions).map((option) => ({
-      id: option.getAttribute("data-id"), // You can use an appropriate identifier for each topping
+      id: option.getAttribute("data-id"), 
       name: option.value,
     }));
   
@@ -147,29 +147,49 @@ export class PizzaOrder extends Component {
   }
 
   async submitOrder() {
-    console.log(this.state.selectedToppings);
+    //console.log(this.state.selectedToppings);
+  
+    // Prepare the order object
     const order = {
       pizzaName: this.state.selectedName,
-      PizzaId: this.state.selectedId,
+      pizzaId: this.state.selectedId,
       pizzaPrice: 10,
-      //toppings: this.state.selectedToppings.map((topping) => topping.value),
     };
-  
-    const response = await fetch("orders", {
+    // Send the order data to the server
+    const orderResponse = await fetch("orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(order),
     });
+    if (orderResponse.status === 200) {
+       // Now, create OrderDetail records for each selected topping
+      for (const selectedTopping of this.state.selectedToppings) {
+        const orderDetail = {
+          orderId: this.state.selectedId, // Use the ID returned by the server when you created the order
+          toppingsId: selectedTopping.id,
+        };
+        console.log(selectedTopping.id);
   
-    if (response.status === 200) {
-      const data = await response.json(); // Parse the JSON response
-      console.log(data.message); // Output the message from the server
-      // Handle the success message here
+        // Send the order detail data to the server
+        const orderDetailResponse = await fetch("orderDetail", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderDetail),
+        });
+  
+        if (orderDetailResponse.status === 200) {
+          const orderDetailData = await orderDetailResponse.json();
+          console.log(orderDetailData.message);
+        } else {
+          // Handle the error when creating an OrderDetail record
+        }
+      }
     } else {
-      // Error placing order
-      const errorData = await response.json(); // Parse the JSON error response
+      // Handle the error when creating an order
     }
   }
 }
