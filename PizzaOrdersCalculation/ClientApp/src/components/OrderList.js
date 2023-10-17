@@ -19,10 +19,10 @@ export class OrderList extends Component {
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th>Order id</th>
+            <th>Pizza name</th>
             <th>Price</th>
-            <th>Pizza id</th>
             <th>Pizza toppings</th>
+            <th>Order date</th>
           </tr>
         </thead>
         <tbody>
@@ -41,10 +41,10 @@ export class OrderList extends Component {
   
             return (
               <tr key={order.id}>
-                <td>{order.id}</td>
+                <td>{order.pizzaName}</td>
                 <td>{order.pizzaPrice}</td>
-                <td>{order.pizzaId}</td>
                 <td>{toppings}</td>
+                <td>{order.orderDate}</td>
               </tr>
             );
           })}
@@ -70,6 +70,19 @@ export class OrderList extends Component {
   async populateOrderData() {
     const response = await fetch('orders');
     const data = await response.json();
+
+     // Get the topping names from the orderDetailData
+     for (const order of data) {
+        // Fetch the topping name from the server
+        const pizzaResponse = await fetch(`pizza/${order.pizzaId}`);
+        const pizzaData = await pizzaResponse.json();
+    
+        // Add the topping name to the orderDetailData object
+        order.pizzaName = pizzaData.name;
+      }
+    
+      console.log(data);
+
     this.setState({ order: data, loading: false });
   }
 

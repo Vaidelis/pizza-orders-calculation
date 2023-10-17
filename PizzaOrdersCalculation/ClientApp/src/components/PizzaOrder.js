@@ -26,8 +26,7 @@ export class PizzaOrder extends Component {
   async populatePizzaData() {
     const response = await fetch("pizza");
     const data = await response.json();
-    console.log(data);
-    this.setState({ pizza: data, loading: false });
+    this.setState({ pizza: data, loading: false, selectedName: `${data[0].name} - ${data[0].size}`, selectedId: data[0].id});
   }
 
   async getToppings() {
@@ -148,12 +147,16 @@ export class PizzaOrder extends Component {
 
   async submitOrder() {
     let orderId;
+    const today = new Date();
+    const formattedDate = today.toISOString().substring(0, 10);
+    console.log(formattedDate);
   
     // Prepare the order object
     const order = {
       pizzaName: this.state.selectedName,
       pizzaId: this.state.selectedId,
       pizzaPrice: 10,
+      OrderDate: formattedDate,
     };
     // Send the order data to the server
     const orderResponse = await fetch("orders", {
@@ -184,15 +187,9 @@ export class PizzaOrder extends Component {
           },
           body: JSON.stringify(orderDetail),
         });
-  
-        if (orderDetailResponse.status === 200) {
-          
-        } else {
-          // Handle the error when creating an OrderDetail record
-        }
       }
     } else {
-      // Handle the error when creating an order
+      alert('Order was not created');
     }
   }
 }

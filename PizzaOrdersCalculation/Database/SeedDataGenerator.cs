@@ -67,19 +67,19 @@ namespace PizzaOrdersCalculation.Database
             return new Orders[] {
                   new Orders
                   {
-                      OrderDate = DateTimeOffset.UtcNow,
+                      OrderDate = DateTime.UtcNow,
                       PizzaId = 1,
                       PizzaPrice = 12,
                   },
                   new Orders
                   {
-                      OrderDate = DateTimeOffset.UtcNow,
+                      OrderDate = DateTime.UtcNow,
                       PizzaId = 2,
                       PizzaPrice = 10,
                   },
                   new Orders
                   {
-                      OrderDate = DateTimeOffset.UtcNow,
+                      OrderDate = DateTime.UtcNow,
                       PizzaId = 3,
                       PizzaPrice = 8,
                   },
