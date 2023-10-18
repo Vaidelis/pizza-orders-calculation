@@ -11,7 +11,8 @@ namespace PizzaOrdersCalculation.Controllers
         public ActionResult<decimal> CalculateOrderPrice([FromBody] OrderDiscountCalculationRequest request)
         {
             decimal orderPrice = (request.PizzaPrice + request.ToppingsPrice) * request.OrderDiscount;
-            return Ok(orderPrice);
+            decimal roundedOrderPrice = Math.Round(orderPrice, 2);
+            return Ok(roundedOrderPrice);
         }
     }
 }

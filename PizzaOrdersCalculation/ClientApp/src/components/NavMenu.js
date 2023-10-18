@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import './NavMenu.css';
 import './Custom.css'
 
@@ -9,24 +9,12 @@ export class NavMenu extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      menuAnchor: null, // Added missing state for the menu anchor
-    };
   }
 
   render() {
     return (
       <AppBar position="static" color="primary">
         <Toolbar style={{ flexWrap: 'wrap' }}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={this.handleMenuOpen}
-          >
-        
-          </IconButton>
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
               PizzaOrdersCalculation

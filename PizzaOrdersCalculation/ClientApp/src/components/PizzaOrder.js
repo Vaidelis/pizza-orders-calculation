@@ -8,7 +8,6 @@ export class PizzaOrder extends Component {
         super(props);
         this.state = {
             pizza: [],
-            loading: true,
             selectedName: "",
             orderPrice: 0,
             pizzaPrice: 0,
@@ -31,8 +30,7 @@ export class PizzaOrder extends Component {
     async populatePizzaData() {
         const response = await fetch("pizza");
         const data = await response.json();
-        console.log(data);
-        this.setState({ pizza: data, loading: false, selectedName: `${data[0].name} - ${data[0].size}`, selectedId: data[0].id, pizzaPrice: data[0].price,  orderPrice: (data[0].price).toFixed(2) });
+        this.setState({ pizza: data, selectedName: `${data[0].name} - ${data[0].size}`, selectedId: data[0].id, pizzaPrice: data[0].price,  orderPrice: (data[0].price).toFixed(1) });
     }
 
     async getToppings() {
@@ -156,7 +154,7 @@ export class PizzaOrder extends Component {
             return responseData;
             
         } catch (error) {
-            // Handle errors
+            console.error("An error occurred:", error);
         }
         
     };
@@ -167,7 +165,7 @@ export class PizzaOrder extends Component {
             <div>
                 <h1>Pizza Order</h1>
                 <p>Select pizza</p>
-                <div class="select-items">
+                <div className="select-items">
                 <div className="select-container">
                     <FormControl>
                         <InputLabel  className="select-label">Pizza</InputLabel >
@@ -258,10 +256,8 @@ export class PizzaOrder extends Component {
         if (orderResponse.status === 200) {
             const responseData = await orderResponse.json();
             orderId = responseData.orderId;
-            console.log(this.state.selectedToppings);
 
             for (const selectedTopping of this.state.selectedToppings) {
-                console.log(orderId);
                 const orderDetail = {
                     orderId: orderId,
                     toppingsId: selectedTopping.id,

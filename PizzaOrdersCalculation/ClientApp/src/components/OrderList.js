@@ -16,14 +16,13 @@ export class OrderList extends Component {
   }
 
   static renderOrderTable(order, orderDetail) {
-    console.log(orderDetail);
     return (
       <TableContainer>
         <Table>
           <TableHead>
           <TableRow style={{ backgroundColor: '#f6d664' }}>
               <TableCell>Pizza name</TableCell>
-              <TableCell>Price</TableCell>
+              <TableCell>Price (EUR)</TableCell>
               <TableCell>Pizza toppings</TableCell>
               <TableCell>Order date</TableCell>
           </TableRow>
@@ -33,8 +32,6 @@ export class OrderList extends Component {
             // Initialize toppings as an empty string
             let toppings = "";
 
-            //console.log(order.id);
-  
             // Find the orderDetail for the current order
             for (let i = 0; i < orderDetail.length; i++) {
               if (orderDetail[i] && orderDetail[i].orderId === order.id) {
@@ -85,8 +82,6 @@ export class OrderList extends Component {
         order.pizzaName = pizzaData.name;
       }
     
-      console.log(data);
-
     this.setState({ order: data, loading: false });
   }
 
@@ -103,9 +98,7 @@ export class OrderList extends Component {
       // Add the topping name to the orderDetailData object
       orderDetail.toppingName = toppingData.name;
     }
-  
-    console.log(orderDetailData);
-  
+    
     // Update the state with the order detail data
     this.setState({ orderDetail: orderDetailData });
   }
