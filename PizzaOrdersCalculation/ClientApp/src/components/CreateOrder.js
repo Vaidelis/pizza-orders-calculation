@@ -1,13 +1,13 @@
 import React, { Component } from "react";
+import { FormControl, InputLabel, Select, MenuItem, Button, Card, CardContent, Typography } from '@mui/material';
 
-export class PizzaOrder extends Component {
-    static displayName = PizzaOrder.name;
+export class CreateOrder extends Component {
+    static displayName = CreateOrder.name;
 
     constructor(props) {
         super(props);
         this.state = {
             pizza: [],
-            loading: true,
             selectedName: "",
             orderPrice: 0,
             pizzaPrice: 0,
@@ -20,6 +20,7 @@ export class PizzaOrder extends Component {
         };
         this.submitOrder = this.submitOrder.bind(this);
     }
+    
 
     componentDidMount() {
         this.populatePizzaData();
@@ -29,8 +30,7 @@ export class PizzaOrder extends Component {
     async populatePizzaData() {
         const response = await fetch("pizza");
         const data = await response.json();
-        console.log(data);
-        this.setState({ pizza: data, loading: false, selectedName: `${data[0].name} - ${data[0].size}`, selectedId: data[0].id, pizzaPrice: data[0].price,  orderPrice: (data[0].price).toFixed(2) });
+        this.setState({ pizza: data, selectedName: `${data[0].name} - ${data[0].size}`, selectedId: data[0].id, pizzaPrice: data[0].price,  orderPrice: (data[0].price).toFixed(1) });
     }
 
     async getToppings() {
@@ -83,7 +83,7 @@ export class PizzaOrder extends Component {
             selectedToppings: [...prevState.selectedToppings, ...selectedToppings],
           }), () => {
             this.setState({ toppingsPrice: toppingsTotalPrice + 1 }, () => {
-              if (this.state.selectedToppings.length >= 3) {
+              if (this.state.selectedToppings.length > 3) {
                 this.setState({ orderDiscount: 0.9 }, () => {
                     (async () => {
                         const orderPrice = await this.calculateOrderPrice(
@@ -118,14 +118,15 @@ export class PizzaOrder extends Component {
         }));
 
         return (
-            <select
+            <Select
                 value={this.state.selectedName}
                 onChange={this.handleSelectNameChange}
+                label="Pizza"
             >
                 {mergedPizza.map((pizza) => (
-                    <option key={pizza.id}>{pizza.name}</option>
+                    <MenuItem key={pizza.id} value={pizza.name}>{pizza.name}</MenuItem>
                 ))}
-            </select>
+            </Select>
         );
     };
 
@@ -150,11 +151,10 @@ export class PizzaOrder extends Component {
                 body: JSON.stringify(request),
             });
             const responseData = await orderCalculationResponse.json();
-            console.log(responseData);
             return responseData;
             
         } catch (error) {
-            // Handle errors
+            console.error("An error occurred:", error);
         }
         
     };
@@ -165,17 +165,25 @@ export class PizzaOrder extends Component {
             <div>
                 <h1>Pizza Order</h1>
                 <p>Select pizza</p>
+                <div className="select-items">
                 <div className="select-container">
-                    <span className="select-label">Pizza</span>
-                    {this.renderMergedSelect()}
+                    <FormControl>
+                        <InputLabel  className="select-label">Pizza</InputLabel>
+                        {this.renderMergedSelect()}
+                    </FormControl>
                 </div>
                 <div className="select-container">
-                    <span className="select-label">Toppings</span>
-                    <select
+                <FormControl>
+                    <InputLabel shrink htmlFor="select-multiple-native">Toppings</InputLabel>
+                    <Select
                         id="toppings-select"
                         multiple
+                        native
                         onChange={this.handleToppingsChange}
-                        disabled={this.state.loading}
+                        label="Toppings"
+                        inputProps={{
+                          id: 'select-multiple-native',
+                        }}
                     >
                         {this.state.toppings &&
                             this.state.toppings.map((topping) => (
@@ -188,34 +196,42 @@ export class PizzaOrder extends Component {
                                     {topping.name}
                                 </option>
                             ))}
-                    </select>
+                    </Select>
+                    </FormControl>
                 </div>
-
-                <div>
-                    <p>Selected Toppings:</p>
-                    {this.state.selectedToppings && this.state.selectedToppings.length > 0 ? (
-                        this.state.selectedToppings.map((topping, index) => (
-                            <span key={topping.id}>{topping.name}, </span>
+                <Card>
+                    <CardContent>
+                        <Typography>Selected Toppings:</Typography>
+                        {this.state.selectedToppings && this.state.selectedToppings.length > 0 ? (
+                        this.state.selectedToppings.map((topping) => (
+                            <Typography key={topping.id} sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', display: 'inline-block', }}>{topping.name}, </Typography>
                         ))
                     ) : (
-                        <span>No toppings selected</span>
+                        <Typography>No toppings selected</Typography>
                     )}
+                    </CardContent>
+                </Card>
                 </div>
-                <div>
-                    <p>Order price</p>
-                    <span>{this.state.orderPrice}</span>
-                </div>
-                {this.state.isLoading && (
-                    <div>Loading toppings...</div>
-                )}
 
-                <button onClick={this.submitOrder}>Submit Order</button>
+                <Card>
+                    <CardContent>
+                        <Typography variant="h6">Order Price</Typography>
+                        <Typography variant="h5">{this.state.orderPrice} EUR</Typography>
+                    </CardContent>
+                </Card>
+                <br></br>
+                <Button variant="contained" onClick={this.submitOrder}>Submit</Button>
             </div>
 
         );
     }
 
     async submitOrder() {
+        if(this.state.pizzaPrice == 0)
+        {
+            alert('Please select pizza');
+            return;
+        }
         let orderId;
         const today = new Date();
         const formattedDate = today.toISOString().substring(0, 10);
@@ -226,7 +242,7 @@ export class PizzaOrder extends Component {
             pizzaName: this.state.selectedName,
             pizzaId: this.state.selectedId,
             pizzaPrice: this.state.orderPrice,
-            OrderDate: formattedDate,
+            orderDate: formattedDate,
         };
         // Send the order data to the server
         const orderResponse = await fetch("orders", {
@@ -240,10 +256,8 @@ export class PizzaOrder extends Component {
         if (orderResponse.status === 200) {
             const responseData = await orderResponse.json();
             orderId = responseData.orderId;
-            console.log(this.state.selectedToppings);
 
             for (const selectedTopping of this.state.selectedToppings) {
-                console.log(orderId);
                 const orderDetail = {
                     orderId: orderId,
                     toppingsId: selectedTopping.id,
@@ -258,6 +272,8 @@ export class PizzaOrder extends Component {
                     body: JSON.stringify(orderDetail),
                 });
             }
+            alert('Pizza added');
+            window.location.reload();
         } else {
             alert('Order was not created');
         }

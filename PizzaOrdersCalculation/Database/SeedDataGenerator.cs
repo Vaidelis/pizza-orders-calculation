@@ -122,6 +122,10 @@ namespace PizzaOrdersCalculation.Database
                   {
                       Name = "Onion",
                   },
+                  new Toppings
+                  {
+                      Name = "Mushrooms",
+                  },
               };
         }
         #endregion

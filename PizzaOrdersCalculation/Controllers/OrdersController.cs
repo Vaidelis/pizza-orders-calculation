@@ -32,8 +32,6 @@ namespace PizzaOrdersCalculation.Controllers
             }
             catch (Exception ex)
             {
-                // Handle any errors or exceptions that may occur during order detail creation
-                // Return an appropriate error response (e.g., status code 500) in case of an error
                 return StatusCode(500, "Error creating order detail");
             }
         }

@@ -10,9 +10,9 @@ namespace PizzaOrdersCalculation.Controllers
         [HttpPost("orderPrice")]
         public ActionResult<decimal> CalculateOrderPrice([FromBody] OrderDiscountCalculationRequest request)
         {
-            // Perform the calculation here
             decimal orderPrice = (request.PizzaPrice + request.ToppingsPrice) * request.OrderDiscount;
-            return Ok(orderPrice);
+            decimal roundedOrderPrice = Math.Round(orderPrice, 2);
+            return Ok(roundedOrderPrice);
         }
     }
 }
