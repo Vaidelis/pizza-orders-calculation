@@ -85,7 +85,7 @@ export class PizzaOrder extends Component {
             selectedToppings: [...prevState.selectedToppings, ...selectedToppings],
           }), () => {
             this.setState({ toppingsPrice: toppingsTotalPrice + 1 }, () => {
-              if (this.state.selectedToppings.length >= 3) {
+              if (this.state.selectedToppings.length > 3) {
                 this.setState({ orderDiscount: 0.9 }, () => {
                     (async () => {
                         const orderPrice = await this.calculateOrderPrice(
@@ -153,7 +153,6 @@ export class PizzaOrder extends Component {
                 body: JSON.stringify(request),
             });
             const responseData = await orderCalculationResponse.json();
-            console.log(responseData);
             return responseData;
             
         } catch (error) {
