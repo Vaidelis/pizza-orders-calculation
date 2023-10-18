@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+
 
 export class OrderList extends Component {
   static displayName = OrderList.name;
@@ -16,16 +18,17 @@ export class OrderList extends Component {
   static renderOrderTable(order, orderDetail) {
     console.log(orderDetail);
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>Pizza name</th>
-            <th>Price</th>
-            <th>Pizza toppings</th>
-            <th>Order date</th>
-          </tr>
-        </thead>
-        <tbody>
+      <TableContainer>
+        <Table>
+          <TableHead>
+          <TableRow style={{ backgroundColor: '#f6d664' }}>
+              <TableCell>Pizza name</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Pizza toppings</TableCell>
+              <TableCell>Order date</TableCell>
+          </TableRow>
+          </TableHead>
+          <TableBody>
           {order.map(order => {
             // Initialize toppings as an empty string
             let toppings = "";
@@ -40,16 +43,17 @@ export class OrderList extends Component {
             }
   
             return (
-              <tr key={order.id}>
-                <td>{order.pizzaName}</td>
-                <td>{order.pizzaPrice}</td>
-                <td>{toppings}</td>
-                <td>{order.orderDate}</td>
-              </tr>
+              <TableRow key={order.id} sx={{ ':hover': { backgroundColor: '#f6d664' } }}>
+                <TableCell>{order.pizzaName}</TableCell>
+                <TableCell>{order.pizzaPrice}</TableCell>
+                <TableCell>{toppings}</TableCell>
+                <TableCell>{order.orderDate}</TableCell>
+              </TableRow>
             );
           })}
-        </tbody>
-      </table>
+        </TableBody>
+        </Table>
+      </TableContainer>
     );
   }
 

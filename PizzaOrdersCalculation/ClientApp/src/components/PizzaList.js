@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+
 
 export class PizzaList extends Component {
   static displayName = PizzaList.name;
@@ -14,24 +16,26 @@ export class PizzaList extends Component {
 
   static renderPizzaTable(pizza) {
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pizza.map(pizza =>
-            <tr key={pizza.id}>
-              <td>{pizza.name}</td>
-              <td>{pizza.size}</td>
-              <td>{pizza.price}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow style={{ backgroundColor: '#f6d664' }}>
+              <TableCell>Name</TableCell>
+              <TableCell>Size</TableCell>
+              <TableCell>Price</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {pizza.map(pizza => (
+              <TableRow key={pizza.id} sx={{ ':hover': { backgroundColor: '#f6d664' } }}>
+                <TableCell>{pizza.name}</TableCell>
+                <TableCell>{pizza.size}</TableCell>
+                <TableCell>{pizza.price}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     );
   }
 
