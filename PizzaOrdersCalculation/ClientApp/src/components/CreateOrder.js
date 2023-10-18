@@ -41,7 +41,6 @@ export class CreateOrder extends Component {
 
     handleSelectNameChange = (event) => {
         const selectedName = event.target.value;
-        let orderCalculatedPrice;
 
         // Find the pizza object that matches the selected name and size
         const selectedPizza = this.state.pizza.find(pizza => {
@@ -227,7 +226,7 @@ export class CreateOrder extends Component {
     }
 
     async submitOrder() {
-        if(this.state.pizzaPrice == 0)
+        if(this.state.pizzaPrice === 0)
         {
             alert('Please select pizza');
             return;
@@ -264,7 +263,7 @@ export class CreateOrder extends Component {
                 };
 
                 // Send the order detail data to the server
-                const orderDetailResponse = await fetch("orderDetail", {
+                 await fetch("orderDetail", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
