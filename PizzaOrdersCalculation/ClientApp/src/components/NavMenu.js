@@ -1,51 +1,59 @@
 import React, { Component } from 'react';
-import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import './NavMenu.css';
 import './Custom.css'
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
-    this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
-      collapsed: true
+      menuAnchor: null, // Added missing state for the menu anchor
     };
-  }
-
-  toggleNavbar () {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
   }
 
   render() {
     return (
-      <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
-          <NavbarBrand tag={Link} to="/">PizzaOrdersCalculation</NavbarBrand>
-          <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-          <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-            <ul className="navbar-nav flex-grow">
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/pizza-list">Pizza List</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/pizza-order">Create order</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/order-list">Order List</NavLink>
-              </NavItem>
-            </ul>
-          </Collapse>
-        </Navbar>
-      </header>
+      <AppBar position="static" color="primary">
+        <Toolbar style={{ flexWrap: 'wrap' }}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={this.handleMenuOpen}
+          >
+        
+          </IconButton>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+              PizzaOrdersCalculation
+            </Link>
+          </Typography>
+          <Button color="inherit">
+            <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+              Home
+            </Link>
+          </Button>
+          <Button color="inherit">
+            <Link to="/pizza-list" style={{ textDecoration: 'none', color: 'white' }}>
+              Pizza List
+            </Link>
+          </Button>
+          <Button color="inherit">
+            <Link to="/pizza-order" style={{ textDecoration: 'none', color: 'white' }}>
+              Create Order
+            </Link>
+          </Button>
+          <Button color="inherit">
+            <Link to="/order-list" style={{ textDecoration: 'none', color: 'white' }}>
+              Order List
+            </Link>
+          </Button>
+        </Toolbar>
+      </AppBar>
     );
   }
 }
