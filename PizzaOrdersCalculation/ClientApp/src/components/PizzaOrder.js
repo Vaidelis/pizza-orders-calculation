@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
 
 export class PizzaOrder extends Component {
     static displayName = PizzaOrder.name;
@@ -20,6 +21,7 @@ export class PizzaOrder extends Component {
         };
         this.submitOrder = this.submitOrder.bind(this);
     }
+    
 
     componentDidMount() {
         this.populatePizzaData();
@@ -118,14 +120,15 @@ export class PizzaOrder extends Component {
         }));
 
         return (
-            <select
+            <Select
                 value={this.state.selectedName}
                 onChange={this.handleSelectNameChange}
+                label="Pizza"
             >
                 {mergedPizza.map((pizza) => (
-                    <option key={pizza.id}>{pizza.name}</option>
+                    <MenuItem key={pizza.id} value={pizza.name}>{pizza.name}</MenuItem>
                 ))}
-            </select>
+            </Select>
         );
     };
 
@@ -165,17 +168,25 @@ export class PizzaOrder extends Component {
             <div>
                 <h1>Pizza Order</h1>
                 <p>Select pizza</p>
+                <div class="select-items">
                 <div className="select-container">
-                    <span className="select-label">Pizza</span>
-                    {this.renderMergedSelect()}
+                    <FormControl>
+                        <InputLabel  className="select-label">Pizza</InputLabel >
+                        {this.renderMergedSelect()}
+                    </FormControl>
                 </div>
                 <div className="select-container">
-                    <span className="select-label">Toppings</span>
-                    <select
+                <FormControl>
+                    <InputLabel shrink htmlFor="select-multiple-native">Toppings</InputLabel>
+                    <Select
                         id="toppings-select"
                         multiple
+                        native
                         onChange={this.handleToppingsChange}
-                        disabled={this.state.loading}
+                        label="Toppings"
+                        inputProps={{
+                          id: 'select-multiple-native',
+                        }}
                     >
                         {this.state.toppings &&
                             this.state.toppings.map((topping) => (
@@ -188,10 +199,10 @@ export class PizzaOrder extends Component {
                                     {topping.name}
                                 </option>
                             ))}
-                    </select>
+                    </Select>
+                    </FormControl>
                 </div>
-
-                <div>
+                <div class="toppings">
                     <p>Selected Toppings:</p>
                     {this.state.selectedToppings && this.state.selectedToppings.length > 0 ? (
                         this.state.selectedToppings.map((topping, index) => (
@@ -201,7 +212,9 @@ export class PizzaOrder extends Component {
                         <span>No toppings selected</span>
                     )}
                 </div>
-                <div>
+                </div>
+
+                <div class="price-display">
                     <p>Order price</p>
                     <span>{this.state.orderPrice}</span>
                 </div>
@@ -209,13 +222,18 @@ export class PizzaOrder extends Component {
                     <div>Loading toppings...</div>
                 )}
 
-                <button onClick={this.submitOrder}>Submit Order</button>
+                <Button variant="contained" onClick={this.submitOrder}>Submit</Button>
             </div>
 
         );
     }
 
     async submitOrder() {
+        if(this.state.pizzaPrice == 0)
+        {
+            alert('Please select pizza');
+            return;
+        }
         let orderId;
         const today = new Date();
         const formattedDate = today.toISOString().substring(0, 10);
@@ -258,6 +276,7 @@ export class PizzaOrder extends Component {
                     body: JSON.stringify(orderDetail),
                 });
             }
+            alert('Pizza added');
         } else {
             alert('Order was not created');
         }

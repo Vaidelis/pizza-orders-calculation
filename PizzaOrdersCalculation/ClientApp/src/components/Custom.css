@@ -1,0 +1,15 @@
+.select-container{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .select-items{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px; 
+  }
+  
+  .toppings > p,
+  .price-display > p{
+    margin-bottom: 0px;
+  }
