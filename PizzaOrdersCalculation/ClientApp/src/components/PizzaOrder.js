@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Button, Card, CardContent, Typography } from '@mui/material';
 
 export class PizzaOrder extends Component {
     static displayName = PizzaOrder.name;
@@ -202,26 +202,27 @@ export class PizzaOrder extends Component {
                     </Select>
                     </FormControl>
                 </div>
-                <div class="toppings">
-                    <p>Selected Toppings:</p>
-                    {this.state.selectedToppings && this.state.selectedToppings.length > 0 ? (
-                        this.state.selectedToppings.map((topping, index) => (
-                            <span key={topping.id}>{topping.name}, </span>
+                <Card>
+                    <CardContent>
+                        <Typography>Selected Toppings:</Typography>
+                        {this.state.selectedToppings && this.state.selectedToppings.length > 0 ? (
+                        this.state.selectedToppings.map((topping) => (
+                            <Typography key={topping.id} sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', display: 'inline-block', }}>{topping.name}, </Typography>
                         ))
                     ) : (
-                        <span>No toppings selected</span>
+                        <Typography>No toppings selected</Typography>
                     )}
-                </div>
+                    </CardContent>
+                </Card>
                 </div>
 
-                <div class="price-display">
-                    <p>Order price</p>
-                    <span>{this.state.orderPrice}</span>
-                </div>
-                {this.state.isLoading && (
-                    <div>Loading toppings...</div>
-                )}
-
+                <Card>
+                    <CardContent>
+                        <Typography variant="h6">Order Price</Typography>
+                        <Typography variant="h5">{this.state.orderPrice} EUR</Typography>
+                    </CardContent>
+                </Card>
+                <br></br>
                 <Button variant="contained" onClick={this.submitOrder}>Submit</Button>
             </div>
 
