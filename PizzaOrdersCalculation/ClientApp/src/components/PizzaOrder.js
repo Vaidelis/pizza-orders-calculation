@@ -41,6 +41,7 @@ export class PizzaOrder extends Component {
 
     handleSelectNameChange = (event) => {
         const selectedName = event.target.value;
+        let orderCalculatedPrice;
 
         // Find the pizza object that matches the selected name and size
         const selectedPizza = this.state.pizza.find(pizza => {
@@ -54,12 +55,16 @@ export class PizzaOrder extends Component {
                   selectedId: selectedPizza.id,
                   pizzaPrice: selectedPizza.price,
                 },
-                () => {
-                  this.setState((prevState) => ({
-                    orderPrice: ((prevState.pizzaPrice + prevState.toppingsPrice) * prevState.orderDiscount).toFixed(2),
-                  }));
-                }
-              );
+                async () => {
+                    const orderPrice = await this.calculateOrderPrice(
+                      this.state.pizzaPrice,
+                      this.state.toppingsPrice,
+                      this.state.orderDiscount
+                    );
+              
+                    this.setState({ orderPrice: orderPrice });
+                  }
+                );
         }
     };
 
@@ -80,16 +85,26 @@ export class PizzaOrder extends Component {
             this.setState({ toppingsPrice: toppingsTotalPrice + 1 }, () => {
               if (this.state.selectedToppings.length >= 3) {
                 this.setState({ orderDiscount: 0.9 }, () => {
-                  this.setState((prevState) => ({
-                    orderPrice: ((prevState.toppingsPrice + this.state.pizzaPrice) * prevState.orderDiscount).toFixed(2),
-                  }), () => {
-                    console.log(this.state.orderDiscount);
-                  });
+                    (async () => {
+                        const orderPrice = await this.calculateOrderPrice(
+                          this.state.pizzaPrice,
+                          this.state.toppingsPrice,
+                          this.state.orderDiscount
+                        );
+                  
+                        this.setState({ orderPrice: orderPrice });
+                      })();
                 });
               } else {
-                this.setState((prevState) => ({
-                  orderPrice: ((prevState.toppingsPrice + this.state.pizzaPrice) * prevState.orderDiscount).toFixed(2),
-                }));
+                (async () => {
+                  const orderPrice = await this.calculateOrderPrice(
+                    this.state.pizzaPrice,
+                    this.state.toppingsPrice,
+                    this.state.orderDiscount
+                  );
+            
+                  this.setState({ orderPrice: orderPrice });
+                })();
               }
             });
           });
@@ -118,6 +133,30 @@ export class PizzaOrder extends Component {
         return this.state.selectedToppings.some(
             (selectedTopping) => selectedTopping.name === toppingName
         );
+    };
+
+    async calculateOrderPrice(pizzaPrice, toppingsPrice, orderDiscount){
+        const request = {
+            pizzaPrice: pizzaPrice,
+            toppingsPrice: toppingsPrice,
+            orderDiscount: orderDiscount,
+        };
+        try {
+            const orderCalculationResponse = await fetch("discountCalculation/orderPrice", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(request),
+            });
+            const responseData = await orderCalculationResponse.json();
+            console.log(responseData);
+            return responseData;
+            
+        } catch (error) {
+            // Handle errors
+        }
+        
     };
 
 

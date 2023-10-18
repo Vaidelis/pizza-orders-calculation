@@ -37,5 +37,6 @@ namespace PizzaOrdersCalculation.Controllers
                 return StatusCode(500, "Error creating order detail");
             }
         }
+        
     }
 }

@@ -9,6 +9,7 @@ const context =  [
   "/toppings",
   "/orders",
   "/orderDetail",
+  "/discountCalculation",
 ];
 
 module.exports = function(app) {
