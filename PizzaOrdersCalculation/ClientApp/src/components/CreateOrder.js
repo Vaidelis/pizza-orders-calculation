@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { FormControl, InputLabel, Select, MenuItem, Button, Card, CardContent, Typography } from '@mui/material';
 
-export class PizzaOrder extends Component {
-    static displayName = PizzaOrder.name;
+export class CreateOrder extends Component {
+    static displayName = CreateOrder.name;
 
     constructor(props) {
         super(props);
@@ -168,7 +168,7 @@ export class PizzaOrder extends Component {
                 <div className="select-items">
                 <div className="select-container">
                     <FormControl>
-                        <InputLabel  className="select-label">Pizza</InputLabel >
+                        <InputLabel  className="select-label">Pizza</InputLabel>
                         {this.renderMergedSelect()}
                     </FormControl>
                 </div>
@@ -242,7 +242,7 @@ export class PizzaOrder extends Component {
             pizzaName: this.state.selectedName,
             pizzaId: this.state.selectedId,
             pizzaPrice: this.state.orderPrice,
-            OrderDate: formattedDate,
+            orderDate: formattedDate,
         };
         // Send the order data to the server
         const orderResponse = await fetch("orders", {
@@ -273,6 +273,7 @@ export class PizzaOrder extends Component {
                 });
             }
             alert('Pizza added');
+            window.location.reload();
         } else {
             alert('Order was not created');
         }

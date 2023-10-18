@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 
@@ -44,7 +44,7 @@ export class OrderList extends Component {
                 <TableCell>{order.pizzaName}</TableCell>
                 <TableCell>{order.pizzaPrice}</TableCell>
                 <TableCell>{toppings}</TableCell>
-                <TableCell>{order.orderDate}</TableCell>
+                <TableCell>{new Date(order.orderDate).toISOString().split('T')[0]}</TableCell>
               </TableRow>
             );
           })}

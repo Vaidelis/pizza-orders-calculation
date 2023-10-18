@@ -1,7 +1,7 @@
-import { PizzaList } from "./components/PizzaList";
-import { PizzaOrder } from "./components/PizzaOrder";
 import { OrderList } from "./components/OrderList";
 import { Home } from "./components/Home";
+import { ListPizza } from "./components/ListPizza";
+import { CreateOrder } from "./components/CreateOrder";
 
 const AppRoutes = [
   {
@@ -9,16 +9,16 @@ const AppRoutes = [
     element: <Home />
   },
   {
-    path: '/pizza-list',
-    element: <PizzaList />
-  },
-  {
-    path: '/pizza-order',
-    element: <PizzaOrder />
-  },
-  {
     path: '/order-list',
     element: <OrderList />
+  },
+  {
+    path: '/list-pizza',
+    element: <ListPizza />
+  },
+  {
+    path: '/create-order',
+    element: <CreateOrder />
   },
 ];
 

@@ -6,7 +6,7 @@ export class Home extends Component {
 
   render() {
     return (
-      <div class="home">
+      <div className="home">
         <img src={image} alt="Pizza" />
         <h1>Pizza Company</h1>
         <p>We serve the best pizza in town!</p>

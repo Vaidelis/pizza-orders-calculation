@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import './NavMenu.css';
-import './Custom.css'
+import './Custom.css';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -26,18 +26,18 @@ export class NavMenu extends Component {
             </Link>
           </Button>
           <Button color="inherit">
-            <Link to="/pizza-list" style={{ textDecoration: 'none', color: 'white' }}>
+            <Link to="/order-list" style={{ textDecoration: 'none', color: 'white' }}>
+              Order List
+            </Link>
+          </Button>
+          <Button color="inherit">
+            <Link to="/list-pizza" style={{ textDecoration: 'none', color: 'white' }}>
               Pizza List
             </Link>
           </Button>
           <Button color="inherit">
-            <Link to="/pizza-order" style={{ textDecoration: 'none', color: 'white' }}>
+            <Link to="/create-order" style={{ textDecoration: 'none', color: 'white' }}>
               Create Order
-            </Link>
-          </Button>
-          <Button color="inherit">
-            <Link to="/order-list" style={{ textDecoration: 'none', color: 'white' }}>
-              Order List
             </Link>
           </Button>
         </Toolbar>

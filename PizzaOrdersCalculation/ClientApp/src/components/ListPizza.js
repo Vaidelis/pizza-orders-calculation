@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 
-export class PizzaList extends Component {
-  static displayName = PizzaList.name;
+export class ListPizza extends Component {
+  static displayName = ListPizza.name;
 
   constructor(props) {
     super(props);
@@ -21,7 +21,7 @@ export class PizzaList extends Component {
           <TableHead>
             <TableRow style={{ backgroundColor: '#f6d664' }}>
               <TableCell>Name</TableCell>
-              <TableCell>Size</TableCell>
+              <TableCell>Size (EUR)</TableCell>
               <TableCell>Price</TableCell>
             </TableRow>
           </TableHead>
@@ -42,7 +42,7 @@ export class PizzaList extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : PizzaList.renderPizzaTable(this.state.pizza);
+      : ListPizza.renderPizzaTable(this.state.pizza);
 
     return (
       <div>
