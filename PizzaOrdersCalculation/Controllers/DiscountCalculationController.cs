@@ -10,7 +10,6 @@ namespace PizzaOrdersCalculation.Controllers
         [HttpPost("orderPrice")]
         public ActionResult<decimal> CalculateOrderPrice([FromBody] OrderDiscountCalculationRequest request)
         {
-            // Perform the calculation here
             decimal orderPrice = (request.PizzaPrice + request.ToppingsPrice) * request.OrderDiscount;
             return Ok(orderPrice);
         }
